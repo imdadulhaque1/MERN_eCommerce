@@ -2,16 +2,14 @@ require("dotenv/config");
 const mongoose = require("mongoose");
 const app = require("./app");
 
-//========> MongoDB Database connection  and Check
-const db = mongoose.connection;
-db.on("error", (err) => {
-  console.log(err);
-});
-db.once("open", () => {
-  console.log("Database connection Established!");
-});
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on PORT @${PORT}`);
+// TODO:========> Check the MongoDB Connection Status
+mongoose.connect(process.env.MONGODB_URL_LOCAL)
+  .then(() =>console.log("Connected to MongoDB!"))
+  .catch(err =>console.error("MongoDB Connection Failed!"))
+
+
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+  console.log(`Server running on PORT @${port}`);
 });
