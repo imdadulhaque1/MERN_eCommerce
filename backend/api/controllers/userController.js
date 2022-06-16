@@ -15,17 +15,13 @@ const signUp = async(req, res, next)=>{
     user.password = await bcrypt.hash(user.password, salt);
     const token = user.generateJWT();
 
-    try{
+    const result = await user.save();
+    return res.status(201).send({
+        message: "Registration Successful!",
+        token: token,
+        user: _.pick(result, ["_id", "name", "email"])
+    })
 
-        const result = await user.save();
-        return res.status(201).send({
-            message: "Registration Successful!",
-            token: token,
-            user: _.pick(result, ["_id", "name", "email"])
-        })
-    }catch(error){
-        return res.status(500).send("Something went wrong!");
-    }
 }
 
 const signIn =async(req, res, next)=>{
